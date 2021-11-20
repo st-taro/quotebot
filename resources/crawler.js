@@ -1,11 +1,42 @@
+const wikiPath = 'https://dota2.fandom.com';
 const Crawler = require('crawler');
+
+let responses = [];
+
+const crawlPage = (error, res, done) => {
+  if (error) {
+    console.log(error);
+    return;
+  } else {
+    let $ = res.$;
+
+    let index = 0;
+    // Find main body of articles
+    let listBody = $('div.mw-parser-output ul li').each(function () {
+      // let line = {
+      //   url: $('div.mw-parser-output ul li a').attr('href'),
+      //   quote: $(this).text(),
+      // };
+      // responses.push(line);
+      let linkRegex = /Link/g;
+      const text = $(this).text();
+      if(text.match(linkRegex)) {
+        const quote = text.substring(8)
+        console.log("quote = " + quote);
+        const url = $('div.mw-parser-output ul li source').attr('src')
+        console.log("url = " +url);
+      }
+      
+    });
+  }
+};
 
 // define crawler callback function
 const crawlCategories = (error, res, done) => {
   if (error) {
     // just console log it 4head
     console.log(error);
-    return {};
+    return;
   } else {
     /**
      * So we need the crawler to take the Dota wiki responses page and
@@ -14,7 +45,6 @@ const crawlCategories = (error, res, done) => {
      */
     let $ = res.$;
 
-    // console.log($('title').text());
     let pages = [];
 
     // Find main body of articles
@@ -26,7 +56,18 @@ const crawlCategories = (error, res, done) => {
       pages.push(page);
     });
 
-    console.log(pages);
+    let responses = [];
+    pages.forEach(function (x) {
+      const { url, title } = x;
+      c.queue([
+        {
+          uri: wikiPath + url,
+          callback: crawlPage,
+        },
+      ]);
+    });
+    // console.log(responses);
+    // console.log(pages);
   }
 };
 
@@ -35,7 +76,7 @@ let c = new Crawler({ maxConnections: 10 });
 
 c.queue([
   {
-    uri: 'https://dota2.fandom.com/wiki/Category:Responses',
+    uri: wikiPath + '/wiki/Category:Responses',
     callback: crawlCategories,
   },
 ]);
