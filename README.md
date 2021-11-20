@@ -1,0 +1,1 @@
+A discord bot that grabs messages from the channel and plays back a corresponding voice line from dota (if there is one).
