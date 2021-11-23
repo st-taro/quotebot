@@ -12,7 +12,7 @@ const crawlPage = (error, res, done) => {
 
     let index = 0;
     // Find main body of articles
-    let listBody = $('div.mw-parser-output ul li').each(function () {
+    let listBody = $('div.mw-parser-output ul li').each(function (i, x) {
       // let line = {
       //   url: $('div.mw-parser-output ul li a').attr('href'),
       //   quote: $(this).text(),
@@ -23,7 +23,7 @@ const crawlPage = (error, res, done) => {
       if(text.match(linkRegex)) {
         const quote = text.substring(8)
         console.log("quote = " + quote);
-        const url = $('div.mw-parser-output ul li source').attr('src')
+        const url = $(x).attr('src')
         console.log("url = " +url);
       }
       
