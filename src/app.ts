@@ -40,6 +40,7 @@ const addQuote = async (quote: string, url: string) => {
     stripped: stripped
   })
   await newQuote.save();
+  
 }
 
 
@@ -74,10 +75,15 @@ client.on('ready', async () => {
 client.on('messageCreate', async (message) => {
   if (!message.guild) return;
 
-
-  // Add a message
-  if (message.content.substring(0, 4) === '-add ') {
-
+  /**
+   * If this is true then we are handling a bot command
+   */
+  if(message.content.substring(0, cfg.commandprefix.length) === cfg.commandprefix) {
+    console.log('handling a command!')
+    let content = message.content.substring(cfg.commandprefix.length)
+    
+    let command = content.replace(/ .*/,'');
+    console.log('command: ' + command)
   }
 
 
