@@ -1,1 +1,1 @@
-A discord bot that grabs messages from the channel and plays back a corresponding voice line from dota (if there is one).
+A discord bot that grabs messages from the channel and plays back a corresponding stored quote. Mostly a little exercise for myself to learn discord.js
